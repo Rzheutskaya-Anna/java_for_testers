@@ -5,7 +5,11 @@ public class Square {
         System.out.println(String.format("Площадь квадрата со стороной %f = %f", a,  squareArea(a)));
     }
 
-    private static double squareArea(double a) {
+    public static double squareArea(double a) {
         return a * a;
+    }
+
+    public static double perimeter(double a) {
+        return 4 * a;
     }
 }
