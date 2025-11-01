@@ -2,6 +2,16 @@ package ru.stqa.geometry.figures;
 
 public record Triangle(double a1, double b1,double c1) {
 
+    public Triangle{
+        if (a1<0 || b1<0 || c1<0) {
+            throw new IllegalArgumentException("Triangle side should be non-negative");
+        }
+        if (a1 + b1 <= c1 || a1 + c1 <= b1 || b1 + c1 <= a1) {
+            throw new IllegalArgumentException("Sum of two sides must be greater than the third");
+        }
+    }
+
+
     public static double areaTriangle(double a, double b, double c) {
         double p = (a + b + c) / 2;
         return Math.sqrt(p * (p - a) * (p - b) * (p - c));
