@@ -1,6 +1,8 @@
 package ru.stqa.geometry.figures;
 
-public record Triangle(double a1, double b1,double c1) {
+import java.util.Objects;
+
+public record Triangle(double a1, double b1, double c1) {
 
     public Triangle{
         if (a1<0 || b1<0 || c1<0) {
@@ -38,5 +40,22 @@ public record Triangle(double a1, double b1,double c1) {
 
     public double perimeterTriangle() {
         return this.a1+this.b1+this.c1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangle triangle = (Triangle) o;
+        return (Double.compare(a1, triangle.a1) == 0 && Double.compare(b1, triangle.b1) == 0 && Double.compare(c1, triangle.c1) == 0)
+                || (Double.compare(a1, triangle.a1) == 0 && Double.compare(b1, triangle.c1) == 0 && Double.compare(c1, triangle.b1) == 0)
+                || (Double.compare(a1, triangle.b1) == 0 && Double.compare(b1, triangle.a1) == 0 && Double.compare(c1, triangle.c1) == 0)
+                || (Double.compare(a1, triangle.b1) == 0 && Double.compare(b1, triangle.c1) == 0 && Double.compare(c1, triangle.a1) == 0)
+                || (Double.compare(a1, triangle.c1) == 0 && Double.compare(b1, triangle.a1) == 0 && Double.compare(c1, triangle.b1) == 0)
+                || (Double.compare(a1, triangle.c1) == 0 && Double.compare(b1, triangle.b1) == 0 && Double.compare(c1, triangle.a1) == 0);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(a1, b1, c1);
     }
 }
