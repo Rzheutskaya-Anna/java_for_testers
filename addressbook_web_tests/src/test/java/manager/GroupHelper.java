@@ -22,18 +22,60 @@ public class GroupHelper extends HelperBase {
 
     public void createGroup(GroupData group) {
         openGroupsPage();
-        click(By.name("new"));
-        type(By.name("group_name"),group.name());
-        type(By.name("group_header"),group.header());
-        type(By.name("group_footer"),group.footer());
+        initGroupCreation();
+        fillGroupForm(group);
+        submitGroupCreation();
+        returnToGroupsPage();
+    }
+
+    private void submitGroupCreation() {
         click(By.name("submit"));
-        click(By.linkText("group page"));
+    }
+
+    private void initGroupCreation() {
+        click(By.name("new"));
     }
 
     public void removeGroup() {
         openGroupsPage();
-        click(By.name("selected[]"));
+        selectGroup();
+        removeSelectedGroup();
+        returnToGroupsPage();
+    }
+
+    private void removeSelectedGroup() {
         click(By.name("delete"));
+    }
+
+    public void modifyGroup(GroupData modifiedGroup) {
+        openGroupsPage();
+        selectGroup();
+        initGroupModification();
+        fillGroupForm(modifiedGroup);
+        submitGroupModification();
+        returnToGroupsPage();
+
+    }
+
+    private void returnToGroupsPage() {
         click(By.linkText("group page"));
+    }
+
+    private void submitGroupModification() {
+        manager.driver.findElement(By.name("update")).click();
+    }
+
+    private void fillGroupForm(GroupData group) {
+        type(By.name("group_name"),group.name());
+        type(By.name("group_header"),group.header());
+        type(By.name("group_footer"),group.footer());
+    }
+
+    private void initGroupModification() {
+        manager.driver.findElement(By.name("edit")).click();
+    }
+
+    private void selectGroup() {
+        click(By.name("selected[]"));
     }
 }
