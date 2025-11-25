@@ -61,4 +61,9 @@ public void createContact(ContactData contact){
         openHomePage();
         return manager.isElementPresent(By.name("selected[]"));
     }
+
+    public int getCountContact() {
+        openHomePage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
 }
