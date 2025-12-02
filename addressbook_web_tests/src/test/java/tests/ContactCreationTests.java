@@ -1,34 +1,58 @@
 package tests;
 
+import common.CommonFunctions;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static manager.HelperBase.randomFile;
+
 public class ContactCreationTests extends TestBase {
 
-    public static List<ContactData>contactProvider(){
+    public static List<ContactData>contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-        for (var firstname : List.of("", "testname")){
-            for (var lastname : List.of("", "testlast name")){
-                for (var address : List.of("", "testaddress")){
-                    for (var mobile : List.of("", "testmobile")){
-                        for (var email : List.of("", "testemail")){
-                            result.add(new ContactData().withFirstName(firstname).withLastName(lastname).withEmail(email).withAddress(address).withMobile(mobile));
-                        }
-                    }
-                }
-for (int i = 0; i < 5; i++ ){
-    result.add(new ContactData(randomString(i*10), randomString(i*10), randomString(i*10), randomString(i*10), randomString(i*10), randomString(i*10)));
-}
+        //   for (var firstname : List.of("", "testname")){
+        //        for (var lastname : List.of("", "testlast name")){
+        //           for (var address : List.of("", "testaddress")){
+        //              for (var mobile : List.of("", "testmobile")){
+        //                   for (var email : List.of("", "testemail")){
+        //                       result.add(new ContactData()
+        //                                .withFirstName(firstname)
+        //                                .withLastName(lastname)
+        //                                .withEmail(email)
+        //                                .withAddress(address)
+        //                                .withMobile(mobile));
+        //                    }
+        //                }
+        //            }
+
+
+        var json = "";
+        try (var reader = new FileReader("contacts.json");
+             var breader = new BufferedReader(reader)
+        ) {
+            var line = breader.readLine();
+            while(line != null) {
+                json = json + line;
+                line = breader.readLine();
             }
+            //var json = Files.readString(Paths.get("groups.json"));
+            ObjectMapper mapper = new ObjectMapper();
+            var value = mapper.readValue(json, new TypeReference<List<ContactData>>() {});
+            result.addAll(value);
+            return result;
         }
-        return result;
     }
 
     @ParameterizedTest
@@ -49,7 +73,14 @@ for (int i = 0; i < 5; i++ ){
 
     @Test
     void canCreateContact(){
-app.contact().createContact(new ContactData().withFirstName("test"));
+        var contact = new ContactData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(10))
+                .withEmail(CommonFunctions.randomString(10))
+                .withAddress(CommonFunctions.randomString(10))
+                .withMobile(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+app.contact().createContact(contact);
     }
 
 }
