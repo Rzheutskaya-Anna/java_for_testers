@@ -4,6 +4,7 @@ import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ public class ContactRemoveTests extends TestBase{
 
     @Test
     void canRemoveContact(){
-if (!app.contact().isContactPresent()){
+if (!app.contact().isContactPresent()) {
     app.contact().createContact(new ContactData("","Ivan", "Ivanov", "Minskaya-street", "147258369", "123@gmail.com", ""));
 }
         var oldContacts = app.contact().getList();
