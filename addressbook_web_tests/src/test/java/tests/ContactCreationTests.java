@@ -104,5 +104,25 @@ app.contact().createContact(contact);
         var newRelated = app.hbm().getContactsInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
-    
+    @Test
+    void canCreateContactAndAddToAGroup() {
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+        var contact = new ContactData()
+                .withFirstName("Test")
+                .withLastName("Contact")
+                .withEmail(CommonFunctions.randomString(10))
+                .withAddress(CommonFunctions.randomString(10))
+                .withMobile(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        app.contact().createContact(contact);
+        var createdContact = app.hbm().getContactList().get(app.hbm().getContactList().size() - 1);
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contact().addContactToGroup(createdContact, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+    }
+
 }

@@ -28,17 +28,17 @@ public class ContactHelper extends HelperBase {
         returnToHomePage();
     }
 
-    public void createContactWithAGroup(ContactData contact, GroupData group) {
-        openContactPage();
-        var oldContacts = manager.hbm().getContactList();
-        fillContactForm(contact);
-        submitContactCreation();
-        returnToHomePage();
-        var newContacts = manager.hbm().getContactList();
-        newContacts.removeAll(oldContacts);
-        selectContact(newContacts.get(0));
+    public void addContactToGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        showAllContacts();
+        selectContact(contact);
         selectGroupAtHomePage(group);
     }
+    private void showAllContacts() {
+        new Select(manager.driver.findElement(By.name("group")))
+                .selectByVisibleText("[all]");
+    }
+
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         openHomePage();
