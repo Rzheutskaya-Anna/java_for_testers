@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HibernateHelper extends HelperBase{
     private SessionFactory sessionFactory;
@@ -26,11 +27,7 @@ public class HibernateHelper extends HelperBase{
 }
 
 static List<GroupData> convertList(List<GroupRecord> records){
-        List<GroupData> result = new ArrayList<>();
-       for (var record : records){
-           result.add(convert(record));
-       }
-       return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
 }
 
     private static GroupData convert(GroupRecord record) {
@@ -44,11 +41,7 @@ static List<GroupData> convertList(List<GroupRecord> records){
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
     }
     static List<ContactData> convertContactList(List<ContactRecord> records){
-        List<ContactData> result = new ArrayList<>();
-        for (var record : records){
-            result.add(convert(record));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
     private static ContactData convert(ContactRecord record){
         return new ContactData()
@@ -58,7 +51,10 @@ static List<GroupData> convertList(List<GroupRecord> records){
                 .withAddress(record.address)
                 .withEmail(record.email)
                 .withMobile(record.mobile)
-                .withPhoto(record.photo);
+                .withPhoto(record.photo)
+                .withWork(record.work)
+                .withSecondary(record.phone2)
+                .withHome(record.home);
     }
 
     private static ContactRecord convert(ContactData data) {

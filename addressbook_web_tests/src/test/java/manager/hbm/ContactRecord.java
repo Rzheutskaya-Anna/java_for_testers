@@ -16,6 +16,9 @@ public String address;
 public String mobile;
 public String email;
 public String photo;
+public String home;
+public String phone2;
+public String work;
 public ContactRecord() {
     }
 
