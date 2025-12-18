@@ -73,7 +73,26 @@ public class ContactHelper extends HelperBase {
         type(By.name("email"), contact.email());
         attach(By.name("photo"), contact.photo());
     }
-
+    public ContactData getContactFormData(ContactData contact) {
+        openHomePage();
+        selectContactEdit(contact);
+        String home = manager.driver.findElement(By.name("home")).getAttribute("value");
+        String mobile = manager.driver.findElement(By.name("mobile")).getAttribute("value");
+        String work = manager.driver.findElement(By.name("work")).getAttribute("value");
+        String email = manager.driver.findElement(By.name("email")).getAttribute("value");
+        String email2 = manager.driver.findElement(By.name("email2")).getAttribute("value");
+        String email3 = manager.driver.findElement(By.name("email3")).getAttribute("value");
+        String address = manager.driver.findElement(By.name("address")).getText();
+        return new ContactData()
+                .withContactId(contact.id())
+                .withHome(home)
+                .withMobile(mobile)
+                .withWork(work)
+                .withAddress(address)
+                .withEmail(email)
+                .withEmail2(email2)
+                .withEmail3(email3);
+    }
     private void selectGroup(GroupData group) {
         new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
@@ -176,5 +195,24 @@ public class ContactHelper extends HelperBase {
             result.put(id, phones);
         }
 return result;
+    }
+
+    public Map<String, String> getEmails() {
+        var result = new HashMap<String, String>();
+        List<WebElement> rows = manager.driver.findElements(By.name("entry"));
+        for (WebElement row : rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var emails = row.findElements(By.tagName("td")).get(4).getText();
+            result.put(id, emails);
+        }
+        return result;
+    }
+
+    public String getEmails(ContactData contact) {
+        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[5]", contact.id()))).getText();
+    }
+
+    public String getAddress(ContactData contact) {
+        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[4]", contact.id()))).getText();
     }
 }
