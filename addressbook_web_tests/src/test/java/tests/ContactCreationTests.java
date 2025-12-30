@@ -22,7 +22,7 @@ import static manager.HelperBase.randomFile;
 public class ContactCreationTests extends TestBase {
 
     public static List<ContactData>contactProvider() throws IOException {
-        var result = new ArrayList<ContactData>();
+        var result = new ArrayList<ContactData>(List.of());
         //   for (var firstname : List.of("", "testname")){
         //        for (var lastname : List.of("", "testlast name")){
         //           for (var address : List.of("", "testaddress")){

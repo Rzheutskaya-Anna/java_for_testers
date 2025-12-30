@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Allure;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,10 +11,12 @@ import java.util.Random;
 public class RemoveGroupTest extends TestBase{
 
     @Test
-    public void CanDeleteGroup() {
-        if (app.hbm().getGroupCount() == 0){
-            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
-        }
+    public void CanDeleteGroup()  {
+        Allure.step("checking precondition", step -> {
+            if (app.hbm().getGroupCount() == 0) {
+                app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+            }
+        });
         var oldGroups = app.hbm().getGroupList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
@@ -21,7 +24,9 @@ public class RemoveGroupTest extends TestBase{
         var newGroups = app.hbm().getGroupList();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.remove(index);
-        Assertions.assertEquals(newGroups, expectedList);
+        Allure.step("validating results", step -> {
+            Assertions.assertEquals(newGroups,expectedList);
+        });
 
     }
 @Test

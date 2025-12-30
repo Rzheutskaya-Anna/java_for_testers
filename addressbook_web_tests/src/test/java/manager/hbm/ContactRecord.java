@@ -23,7 +23,7 @@ public ContactRecord() {
     }
 
 public ContactRecord(int id, String firstname, String lastname, String address, String mobile, String email, String photo){
-
+    this.id = id;
     this.firstname = firstname;
     this.lastname = lastname;
     this.address = address;
